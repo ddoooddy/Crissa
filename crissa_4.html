@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Crissa - Construction &amp; Real Estate</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Metropolis:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-container": "#a5d8fe",
+                        "outline": "#6f787e",
+                        "background": "#fbf9f8",
+                        "surface-container": "#f0eded",
+                        "surface": "#fbf9f8",
+                        "on-surface": "#1b1c1c",
+                        "on-surface-variant": "#3f484d",
+                        "primary": "#005c79",
+                        "primary-container": "#00769a",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#e0f3ff",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#bec8ce",
+                    },
+                    fontFamily: {
+                        "headline-sm": ["Metropolis", "sans-serif"],
+                        "headline-lg": ["Metropolis", "sans-serif"],
+                        "display-lg": ["Metropolis", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "body-sm": ["Inter", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* ══ Base ══ */
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        }
+
+        /* ══ Scroll reveal ══ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 0.8s cubic-bezier(.22,1,.36,1), transform 0.8s cubic-bezier(.22,1,.36,1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: .10s; }
+        .reveal-delay-2 { transition-delay: .20s; }
+        .reveal-delay-3 { transition-delay: .30s; }
+        .reveal-delay-4 { transition-delay: .40s; }
+        .reveal-delay-5 { transition-delay: .50s; }
+
+        /* ══ Hero animations ══ */
+        @keyframes fadeUp {
+            from { opacity:0; transform:translateY(28px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .hero-title  { animation: fadeUp .9s cubic-bezier(.22,1,.36,1) .25s both; }
+        .hero-sub    { animation: fadeUp .9s cubic-bezier(.22,1,.36,1) .50s both; }
+        .hero-btn    { animation: fadeUp .9s cubic-bezier(.22,1,.36,1) .70s both; }
+
+        @keyframes drawLine {
+            from { transform: scaleX(0); opacity: 0; }
+            to   { transform: scaleX(1); opacity: 1; }
+        }
+        .hero-underline {
+            display:block; height:5px; background:#00769a; border-radius:4px;
+            transform:scaleX(0); transform-origin:left;
+            animation: drawLine 1s cubic-bezier(.22,1,.36,1) .9s forwards;
+        }
+
+        @keyframes fadeScroll {
+            0%,100%{opacity:.5;transform:translateY(0)}
+            50%{opacity:.9;transform:translateY(8px)}
+        }
+
+        /* ══ Animated gradient orbs in hero ══ */
+        @keyframes driftA {
+            0%,100%{ transform:translate(0,0) scale(1); }
+            50%    { transform:translate(40px,-30px) scale(1.1); }
+        }
+        @keyframes driftB {
+            0%,100%{ transform:translate(0,0) scale(1); }
+            50%    { transform:translate(-30px,40px) scale(1.08); }
+        }
+        .orb-a { animation: driftA 12s ease-in-out infinite; }
+        .orb-b { animation: driftB 16s ease-in-out infinite; }
+
+        /* ══ Nav ══ */
+        #navbar { transition: box-shadow .3s ease, background .3s ease; }
+        .nav-scrolled {
+            box-shadow: 0 4px 32px rgba(0,92,121,.12);
+            background: rgba(255,255,255,.95);
+            backdrop-filter: blur(12px);
+        }
+
+        /* ══ Mobile menu ══ */
+        #mobile-menu {
+            transition: max-height .4s cubic-bezier(.22,1,.36,1), opacity .3s ease;
+            max-height:0; opacity:0; overflow:hidden;
+        }
+        #mobile-menu.open { max-height:420px; opacity:1; }
+
+        /* ══ Stat cards ══ */
+        .stat-card {
+            position: relative;
+            transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content:'';
+            position:absolute; inset:0;
+            background: linear-gradient(135deg, rgba(0,118,154,.07) 0%, transparent 60%);
+            opacity:0; transition:opacity .35s ease;
+        }
+        .stat-card:hover { transform:translateY(-8px); box-shadow:0 20px 48px rgba(0,92,121,.15); }
+        .stat-card:hover::before { opacity:1; }
+        .stat-card .icon-ring {
+            width:72px; height:72px; border-radius:50%;
+            border: 2px solid rgba(0,118,154,.2);
+            display:flex; align-items:center; justify-content:center;
+            position:relative; transition:border-color .3s ease;
+        }
+        .stat-card:hover .icon-ring { border-color: rgba(0,118,154,.6); }
+
+        /* ══ Service cards ══ */
+        .service-card {
+            transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease;
+            position:relative; overflow:hidden;
+        }
+        .service-card::after {
+            content:''; position:absolute; bottom:0; left:0; right:0; height:4px;
+            background: linear-gradient(90deg,#005c79,#00769a);
+            transform:scaleX(0); transform-origin:left; transition:transform .4s cubic-bezier(.22,1,.36,1);
+        }
+        .service-card:hover { transform:translateY(-10px); box-shadow:0 24px 56px rgba(0,92,121,.18); }
+        .service-card:hover::after { transform:scaleX(1); }
+        .service-icon-wrap {
+            width:80px; height:80px; border-radius:20px;
+            background: linear-gradient(135deg,rgba(0,118,154,.12),rgba(0,92,121,.06));
+            display:flex; align-items:center; justify-content:center;
+            transition: transform .4s ease, background .4s ease;
+        }
+        .service-card:hover .service-icon-wrap {
+            transform:scale(1.12) rotate(-3deg);
+            background: linear-gradient(135deg,rgba(0,118,154,.22),rgba(0,92,121,.12));
+        }
+
+        /* ══ Investment ══ */
+        .inv-featured {
+            background: linear-gradient(150deg, #00769a 0%, #005c79 55%, #003a4e 100%);
+            transform:scale(1.06);
+            box-shadow:0 28px 64px rgba(0,92,121,.4);
+            position:relative; z-index:10; overflow:hidden;
+        }
+        .inv-featured::before {
+            content:'';
+            position:absolute; top:-60%; left:-40%; width:200%; height:200%;
+            background:radial-gradient(ellipse, rgba(255,255,255,.08) 0%, transparent 60%);
+        }
+        .inv-card {
+            transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
+        }
+        .inv-card:hover { transform:translateY(-6px); box-shadow:0 16px 40px rgba(0,92,121,.14); }
+
+        /* ══ Team cards ══ */
+        .team-card {
+            transition:transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease;
+            overflow:hidden;
+        }
+        .team-card:hover { transform:translateY(-10px); box-shadow:0 28px 60px rgba(0,92,121,.18); }
+        .team-card .photo-wrap { position:relative; overflow:hidden; aspect-ratio:3/4; }
+        .team-card .photo-wrap img { transition:transform .6s cubic-bezier(.22,1,.36,1); width:100%; height:100%; object-fit:cover; object-position:top; }
+        .team-card:hover .photo-wrap img { transform:scale(1.06); }
+        .team-card .photo-overlay {
+            position:absolute; inset:0;
+            background:linear-gradient(to top, rgba(0,60,78,.75) 0%, transparent 50%);
+            opacity:0; transition:opacity .4s ease;
+        }
+        .team-card:hover .photo-overlay { opacity:1; }
+
+        /* ══ WhatsApp float ══ */
+        @keyframes pulse-wa {
+            0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,.5);}
+            50%{box-shadow:0 0 0 16px rgba(37,211,102,0);}
+        }
+        .wa-float { animation:pulse-wa 2.5s ease infinite; }
+
+        /* ══ Contact ══ */
+        .contact-info-item {
+            display:flex; align-items:flex-start; gap:14px;
+            padding:18px 0; border-bottom:1px solid rgba(111,120,126,.1);
+        }
+        .contact-info-item:last-child { border-bottom:none; }
+
+        /* ══ Section dividers ══ */
+        .section-label {
+            display:inline-flex; align-items:center; gap:8px;
+            font-size:11px; font-weight:700; letter-spacing:.18em;
+            text-transform:uppercase; color:#00769a;
+        }
+        .section-label::before {
+            content:''; display:block; width:28px; height:2px;
+            background:linear-gradient(90deg,#00769a,transparent);
+        }
+
+        /* ══ Dot pattern ══ */
+        .dot-pattern {
+            background-image: radial-gradient(rgba(0,92,121,.06) 1px, transparent 1px);
+            background-size:28px 28px;
+        }
+
+        /* ══ SHOWCASE SPIN SECTION ══ */
+        .spin-section {
+            position:relative;
+            height:250vh;
+        }
+        .spin-sticky {
+            position:sticky; top:0; height:100vh;
+            overflow:hidden; display:flex;
+            align-items:center; justify-content:center;
+        }
+        .spin-bg {
+            position:absolute; inset:0;
+            background: linear-gradient(145deg, #002c3d 0%, #005c79 45%, #003a4e 100%);
+        }
+        /* animated background circles */
+        .spin-rings {
+            position:absolute; inset:0;
+            display:flex; align-items:center; justify-content:center;
+            pointer-events:none;
+        }
+        .spin-ring {
+            position:absolute; border-radius:50%;
+            border:1px solid rgba(255,255,255,.06);
+        }
+        /* spin progress bar */
+        .spin-progress-bar {
+            position:absolute; top:0; left:0; height:3px;
+            background:linear-gradient(90deg, #00769a, rgba(0,118,154,.3));
+            transform-origin:left; transform:scaleX(0);
+            transition:transform .1s linear;
+            z-index:20;
+        }
+        /* The actual spinning card wrapper */
+        .spin-card-perspective {
+            perspective: 1100px;
+        }
+        .spin-card {
+            transform-style:preserve-3d;
+            will-change:transform;
+        }
+        .spin-card-face {
+            position:relative;
+            border-radius:24px;
+            overflow:hidden;
+            box-shadow:
+                0 50px 100px rgba(0,0,0,.55),
+                0 0 0 1px rgba(255,255,255,.08),
+                inset 0 1px 0 rgba(255,255,255,.12);
+        }
+        .spin-card-face img {
+            width:100%; display:block;
+            max-height:72vh; object-fit:cover;
+        }
+        .spin-card-caption {
+            position:absolute; bottom:0; left:0; right:0;
+            padding:32px 28px 28px;
+            background:linear-gradient(to top, rgba(0,20,30,.85) 0%, transparent 100%);
+        }
+        /* Floating badge on image */
+        .spin-badge {
+            position:absolute; top:20px; right:20px;
+            background:rgba(255,255,255,.12);
+            backdrop-filter:blur(8px);
+            border:1px solid rgba(255,255,255,.2);
+            border-radius:12px; padding:8px 14px;
+            font-size:11px; font-weight:700;
+            letter-spacing:.12em; color:white;
+            text-transform:uppercase;
+        }
+        /* Decorative frame behind card */
+        .spin-card-frame {
+            position:absolute; inset:-12px; border-radius:32px;
+            border:1px solid rgba(255,255,255,.1);
+            transform:translateZ(-30px) scale(.97);
+        }
+        /* Scroll hint */
+        .spin-hint {
+            position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
+            display:flex; flex-direction:column; align-items:center; gap:8px;
+            opacity:.5; transition:opacity .5s ease;
+        }
+        .spin-hint span { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:white; }
+        /* Text side */
+        .spin-text-side {
+            opacity:0; transform:translateX(-24px);
+            transition:opacity .9s ease, transform .9s cubic-bezier(.22,1,.36,1);
+        }
+        .spin-text-side.visible { opacity:1; transform:translateX(0); }
+        /* Glow behind card */
+        .spin-glow {
+            position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+            width:500px; height:500px; border-radius:50%;
+            background:radial-gradient(ellipse, rgba(0,118,154,.25) 0%, transparent 70%);
+            pointer-events:none; transition:opacity .5s ease;
+        }
+
+        /* ══ Gradient text ══ */
+        .gradient-text {
+            background:linear-gradient(135deg,#005c79 0%,#00769a 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip:text;
+        }
+
+        /* ══ Hero parallax ══ */
+        .hero-bg { will-change:transform; }
+
+        /* ══ Hero scroll-driven fade ══ */
+        @keyframes heroScrollFade {
+            from { opacity:1; transform:translateY(0); }
+            to   { opacity:0; transform:translateY(80px); }
+        }
+        @supports (animation-timeline: scroll()) {
+            #heroContent {
+                animation: heroScrollFade linear both;
+                animation-timeline: scroll(root);
+                animation-range: 0px 480px;
+            }
+        }
+
+        /* ══ Team card gradient ══ */
+        .team-info {
+            background: linear-gradient(to bottom, #ffffff 0%, #cce8f4 100%);
+        }
+
+        /* ══ Number glow ══ */
+        .stat-number {
+            background:linear-gradient(135deg,#005c79 0%,#00769a 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip:text;
+        }
+
+        /* ══ Projects section dark ══ */
+        .projects-bg {
+            background: linear-gradient(150deg, #003a4e 0%, #005c79 50%, #00769a 100%);
+        }
+
+        /* ══ Section transitions ══ */
+        section { position:relative; }
+    </style>
+</head>
+<body class="bg-background font-[Inter,sans-serif] antialiased text-on-surface">
+
+<!-- ════════════════════════════════════
+     NAV
+════════════════════════════════════ -->
+<nav id="navbar" class="bg-white fixed top-0 left-0 w-full z-50 border-b border-outline/10">
+    <div class="max-w-[1200px] mx-auto px-6 flex justify-between items-center py-4">
+        <a href="#">
+            <img alt="Crissa Logo" class="h-10 w-auto object-contain" src="Crissalogo.jpg"/>
+        </a>
+        <div class="hidden md:flex items-center gap-7 text-[15px] font-[500]">
+            <a class="text-primary border-b-2 border-primary pb-0.5" href="#">Inicio</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#services">Servicios</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#projects">Proyectos</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#investment">Inversión</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#team">Equipo</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#contact">Contacto</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="https://wa.me/541138651991?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20Crissa." target="_blank"
+               class="hidden md:flex items-center gap-2 bg-[#005c79] text-white border-2 border-[#005c79] hover:bg-white hover:text-[#005c79] transition-all duration-300 px-5 py-2 rounded-xl font-[600] text-[14px]">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Contactar
+            </a>
+            <button id="menu-btn" class="md:hidden text-on-surface p-2">
+                <span class="material-symbols-outlined" style="font-size:28px;">menu</span>
+            </button>
+        </div>
+    </div>
+    <div id="mobile-menu" class="md:hidden bg-white border-t border-outline/10">
+        <div class="max-w-[1200px] mx-auto px-6 py-4 flex flex-col gap-4">
+            <a class="text-primary font-[600]" href="#">Inicio</a>
+            <a class="text-on-surface-variant hover:text-primary" href="#services">Servicios</a>
+            <a class="text-on-surface-variant hover:text-primary" href="#projects">Proyectos</a>
+            <a class="text-on-surface-variant hover:text-primary" href="#investment">Inversión</a>
+            <a class="text-on-surface-variant hover:text-primary" href="#team">Equipo</a>
+            <a class="text-on-surface-variant hover:text-primary" href="#contact">Contacto</a>
+            <a href="https://wa.me/541138651991?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20Crissa." target="_blank"
+               class="flex items-center gap-2 bg-[#005c79] text-white px-4 py-2 rounded-xl font-[600] text-[14px] w-fit">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Contactar por WhatsApp
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- ════════════════════════════════════
+     HERO
+════════════════════════════════════ -->
+<header class="relative w-full h-[860px] min-h-[600px] flex items-center justify-center overflow-hidden pt-20">
+    <!-- BG image + overlays -->
+    <div class="absolute inset-0 z-0">
+        <!-- Base image — guardá la foto como crissa_hero2.jpg en la misma carpeta -->
+        <div class="hero-bg w-full h-[115%] -top-[7%] absolute bg-cover bg-center"
+             style="background-image: url('crissa_hero2.jpg'), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAMtLkOvvJ6G-tzNf3WuaVCHdr6ut7EUpilyLe8gw6M3Z4j0Y33-7us_yhHFmtv4m3JbhcT1UL9VhflZVDr-WwDgo9c7QUhCV6i-ZavgeXn5XbwMabdON7j0e5zYnUX5aQ2b4zxy2xEvt8dZ3WgvfcDfm_PLeslU3kJZdDXIe1hjGpeLJRnIz7YO-c0x4uYt0nkoa7339vQb-8NO6wwLK2JZJIyW43ibMjHDey3n92iWNERiRu6oQ9l6dO3mbE89tI_cinCaclsO7Q6');"></div>
+        <!-- Rich layered gradient -->
+        <div class="absolute inset-0 z-10" style="background:linear-gradient(160deg,rgba(0,20,30,.72) 0%,rgba(0,60,80,.42) 50%,rgba(0,30,45,.68) 100%);"></div>
+        <!-- Color tint overlay -->
+        <div class="absolute inset-0 z-10" style="background:linear-gradient(to bottom, transparent 30%, rgba(0,30,48,.65) 100%);"></div>
+        <!-- Animated orbs -->
+        <div class="orb-a absolute z-10" style="top:15%;left:10%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(0,118,154,.18) 0%,transparent 70%);"></div>
+        <div class="orb-b absolute z-10" style="bottom:20%;right:8%;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,rgba(0,92,121,.14) 0%,transparent 70%);"></div>
+    </div>
+
+    <!-- Content -->
+    <div id="heroContent" class="relative z-20 text-center px-6 max-w-[860px] mx-auto">
+        <div class="hero-title inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-5 py-2 mb-7">
+            <span class="w-2 h-2 rounded-full bg-[#00769a]"></span>
+            <span class="text-white/80 uppercase tracking-[0.18em] text-[11px] font-[700]">30 años de trayectoria · Buenos Aires</span>
+        </div>
+        <h1 class="hero-title font-[Metropolis,sans-serif] text-[clamp(44px,6.5vw,76px)] leading-[1.06] font-[800] text-white mb-4 tracking-tight"
+            style="text-shadow:0 4px 24px rgba(0,0,0,.6);">
+            Transformamos visión<br>
+            <span class="relative inline-block">
+                en realidad.
+                <span class="hero-underline mt-2"></span>
+            </span>
+        </h1>
+        <p class="hero-sub text-[18px] leading-[1.7] text-white/80 max-w-[540px] mx-auto mt-7"
+           style="text-shadow:0 2px 12px rgba(0,0,0,.4);">
+            Precisión y calidad premium en cada proyecto.<br>Construimos el futuro desde Buenos Aires.
+        </p>
+        <div class="hero-btn flex flex-col sm:flex-row gap-4 justify-center mt-10">
+            <a href="#projects"
+               class="inline-flex items-center justify-center gap-2 bg-[#005c79] text-white border-2 border-transparent hover:bg-transparent hover:border-white transition-all duration-350 px-9 py-4 rounded-xl font-[600] text-[15px]">
+                <span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 0;">apartment</span>
+                Nuestros Proyectos
+            </a>
+            <a href="formulario.html"
+               class="inline-flex items-center justify-center gap-2 bg-white/12 backdrop-blur-sm text-white border-2 border-white/35 hover:bg-white/22 transition-all duration-350 px-9 py-4 rounded-xl font-[600] text-[15px]">
+                Consultar por inversión
+            </a>
+        </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-55">
+        <span class="text-white text-[10px] uppercase tracking-[0.2em]">Scroll</span>
+        <div style="width:1px;height:44px;background:linear-gradient(to bottom,white,transparent);animation:fadeScroll 2s ease infinite;"></div>
+    </div>
+</header>
+
+<!-- ════════════════════════════════════
+     STATS
+════════════════════════════════════ -->
+<section class="py-[96px] px-6 bg-surface dot-pattern">
+    <div class="max-w-[1200px] mx-auto">
+        <div class="reveal text-center mb-12">
+            <span class="section-label">Nuestra trayectoria en números</span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-5 text-center">
+
+            <div class="stat-card reveal reveal-delay-1 bg-white border border-outline/15 rounded-2xl p-7 flex flex-col items-center justify-center">
+                <div class="icon-ring mb-4">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:40px;">square_foot</span>
+                </div>
+                <span class="stat-number font-[Metropolis,sans-serif] font-[800] text-[44px] leading-none mb-2 stat-counter" data-target="30284">0</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-on-surface-variant font-[700] mt-1">Total de m²</span>
+            </div>
+
+            <div class="stat-card reveal reveal-delay-2 bg-white border border-outline/15 rounded-2xl p-7 flex flex-col items-center justify-center">
+                <div class="icon-ring mb-4">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:40px;">domain</span>
+                </div>
+                <span class="stat-number font-[Metropolis,sans-serif] font-[800] text-[44px] leading-none mb-2 stat-counter" data-target="14">0</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-on-surface-variant font-[700] mt-1">Edificios</span>
+            </div>
+
+            <div class="stat-card reveal reveal-delay-3 bg-white border border-outline/15 rounded-2xl p-7 flex flex-col items-center justify-center">
+                <div class="icon-ring mb-4">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:40px;">apartment</span>
+                </div>
+                <span class="stat-number font-[Metropolis,sans-serif] font-[800] text-[44px] leading-none mb-2 stat-counter" data-target="255">0</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-on-surface-variant font-[700] mt-1">Departamentos</span>
+            </div>
+
+            <div class="stat-card reveal reveal-delay-4 bg-white border border-outline/15 rounded-2xl p-7 flex flex-col items-center justify-center">
+                <div class="icon-ring mb-4">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:40px;">home_work</span>
+                </div>
+                <span class="stat-number font-[Metropolis,sans-serif] font-[800] text-[44px] leading-none mb-2 stat-counter" data-target="24">0</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-on-surface-variant font-[700] mt-1">Duplex</span>
+            </div>
+
+            <div class="stat-card reveal reveal-delay-5 bg-white border border-outline/15 rounded-2xl p-7 flex flex-col items-center justify-center">
+                <div class="icon-ring mb-4">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:40px;">home</span>
+                </div>
+                <span class="stat-number font-[Metropolis,sans-serif] font-[800] text-[44px] leading-none mb-2 stat-counter" data-target="30">0</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-on-surface-variant font-[700] mt-1">Casas</span>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════════
+     SHOWCASE — SCROLL-DRIVEN SPIN
+     Guardá la imagen como: crissa_interior.jpg
+     en la misma carpeta que este HTML
+════════════════════════════════════ -->
+<section id="showcase" class="spin-section">
+
+    <!-- Progress bar at top -->
+    <div class="spin-progress-bar" id="spinProgressBar"></div>
+
+    <div class="spin-sticky">
+        <!-- Background -->
+        <div class="spin-bg"></div>
+
+        <!-- Decorative rings -->
+        <div class="spin-rings">
+            <div class="spin-ring" style="width:350px;height:350px;"></div>
+            <div class="spin-ring" style="width:580px;height:580px;"></div>
+            <div class="spin-ring" style="width:820px;height:820px;"></div>
+            <div class="spin-ring" style="width:1100px;height:1100px;"></div>
+        </div>
+
+        <!-- Glow -->
+        <div class="spin-glow" id="spinGlow"></div>
+
+        <!-- Content grid -->
+        <div class="relative z-10 w-full max-w-[1200px] mx-auto px-6 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+
+            <!-- Text column -->
+            <div class="spin-text-side lg:w-[45%] text-white" id="spinTextSide">
+                <span class="section-label text-white/60 mb-6 block" style="color:rgba(255,255,255,.55);">
+                    Nuestros espacios
+                </span>
+                <h2 class="font-[Metropolis,sans-serif] text-[clamp(34px,4.5vw,58px)] font-[800] leading-[1.1] mb-6 tracking-tight">
+                    Ambientes que<br>inspiran calidad
+                </h2>
+                <p class="text-[17px] leading-[1.75] text-white/72 max-w-[440px] mb-10">
+                    Cada espacio que construimos refleja nuestra obsesión por el detalle. Materiales premium, diseño inteligente y acabados de excelencia en cada metro cuadrado.
+                </p>
+                <div class="flex gap-10">
+                    <div style="border-left:2px solid rgba(255,255,255,.3);padding-left:16px;">
+                        <div class="font-[Metropolis,sans-serif] font-[800] text-[32px] leading-none text-white mb-1">30+</div>
+                        <div class="text-[12px] uppercase tracking-wider text-white/55 font-[600]">Años de calidad</div>
+                    </div>
+                    <div style="border-left:2px solid rgba(255,255,255,.3);padding-left:16px;">
+                        <div class="font-[Metropolis,sans-serif] font-[800] text-[32px] leading-none text-white mb-1">255</div>
+                        <div class="text-[12px] uppercase tracking-wider text-white/55 font-[600]">Familias felices</div>
+                    </div>
+                    <div style="border-left:2px solid rgba(255,255,255,.3);padding-left:16px;">
+                        <div class="font-[Metropolis,sans-serif] font-[800] text-[32px] leading-none text-white mb-1">14</div>
+                        <div class="text-[12px] uppercase tracking-wider text-white/55 font-[600]">Edificios</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spinning card column -->
+            <div class="lg:w-[55%] flex items-center justify-center">
+                <div class="spin-card-perspective">
+                    <div class="spin-card" id="spinCard">
+                        <div class="spin-card-face" style="width:min(420px,88vw);">
+                            <!-- ⚠️  Guardá la imagen como crissa_interior.jpg en la misma carpeta -->
+                            <img src="crissa_interior.jpg"
+                                 alt="Interior Crissa — ambientes de excelencia"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                            />
+                            <!-- Placeholder (se oculta cuando la imagen carga) -->
+                            <div style="display:none;width:100%;height:480px;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:rgba(0,60,80,.4);">
+                                <span class="material-symbols-outlined text-white/40" style="font-size:64px;font-variation-settings:'FILL' 0;">image</span>
+                                <p style="color:rgba(255,255,255,.4);font-size:13px;text-align:center;padding:0 24px;">
+                                    Guardá la imagen como<br><strong>crissa_interior.jpg</strong><br>en la misma carpeta que este HTML
+                                </p>
+                            </div>
+                            <!-- Badge -->
+                            <div class="spin-badge">Premium</div>
+                            <!-- Caption -->
+                            <div class="spin-card-caption">
+                                <p style="color:white;font-weight:700;font-size:17px;margin-bottom:4px;">Diseño de interiores</p>
+                                <p style="color:rgba(255,255,255,.65);font-size:13px;">Acabados de excelencia · Buenos Aires</p>
+                            </div>
+                        </div>
+                        <!-- Decorative frame behind -->
+                        <div class="spin-card-frame"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Scroll hint -->
+        <div class="spin-hint" id="spinHint">
+            <span>Scrolleá para girar</span>
+            <div style="width:1px;height:32px;background:linear-gradient(to bottom,rgba(255,255,255,.4),transparent);animation:fadeScroll 2s ease infinite;"></div>
+        </div>
+    </div>
+
+</section>
+
+<!-- ════════════════════════════════════
+     SERVICES
+════════════════════════════════════ -->
+<section class="py-[120px] px-6 bg-background" id="services">
+    <div class="max-w-[1200px] mx-auto">
+        <div class="reveal text-center mb-16">
+            <span class="section-label justify-center mb-4 block">Lo que hacemos</span>
+            <h2 class="font-[Metropolis,sans-serif] text-[clamp(32px,4vw,50px)] font-[800] text-on-surface tracking-tight">
+                Nuestros <span class="gradient-text">Servicios</span>
+            </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <div class="service-card reveal reveal-delay-1 bg-white p-8 border border-outline/15 rounded-2xl flex flex-col items-center text-center">
+                <div class="service-icon-wrap mb-6">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:44px;">touch_app</span>
+                </div>
+                <h3 class="font-[Metropolis,sans-serif] text-[19px] font-[700] text-on-surface mb-3 tracking-tight">ASESORÍA</h3>
+                <p class="text-[14px] leading-[1.65] text-on-surface-variant">Orientación previa con el fin de lograr el mejor resultado, ya sea obra nueva, reforma, ampliación o inversión.</p>
+            </div>
+
+            <div class="service-card reveal reveal-delay-2 bg-white p-8 border border-outline/15 rounded-2xl flex flex-col items-center text-center">
+                <div class="service-icon-wrap mb-6">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:44px;">architecture</span>
+                </div>
+                <h3 class="font-[Metropolis,sans-serif] text-[19px] font-[700] text-on-surface mb-3 tracking-tight">DISEÑO</h3>
+                <p class="text-[14px] leading-[1.65] text-on-surface-variant">Profesionales que elaboran el proyecto partiendo de las necesidades del cliente, el lote, su entorno y el asoleamiento.</p>
+            </div>
+
+            <div class="service-card reveal reveal-delay-3 bg-white p-8 border border-outline/15 rounded-2xl flex flex-col items-center text-center">
+                <div class="service-icon-wrap mb-6">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:44px;">menu_book</span>
+                </div>
+                <h3 class="font-[Metropolis,sans-serif] text-[19px] font-[700] text-on-surface mb-3 tracking-tight">GESTIÓN</h3>
+                <p class="text-[14px] leading-[1.65] text-on-surface-variant">Documentación técnico-constructiva y presentación ante entidades municipales y organismos de control.</p>
+            </div>
+
+            <div class="service-card reveal reveal-delay-4 bg-white p-8 border border-outline/15 rounded-2xl flex flex-col items-center text-center">
+                <div class="service-icon-wrap mb-6">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:44px;">foundation</span>
+                </div>
+                <h3 class="font-[Metropolis,sans-serif] text-[19px] font-[700] text-on-surface mb-3 tracking-tight">CONSTRUCCIÓN</h3>
+                <p class="text-[14px] leading-[1.65] text-on-surface-variant">Ejecución con mano de obra idónea y especializada, bajo la dirección de profesionales comprometidos.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════════
+     INVESTMENT
+════════════════════════════════════ -->
+<section class="py-[96px] px-6 bg-surface-container-low border-y border-outline/10" id="investment">
+    <div class="max-w-[1200px] mx-auto">
+        <div class="reveal text-center mb-16">
+            <span class="section-label justify-center mb-4 block">Tu camino</span>
+            <h2 class="font-[Metropolis,sans-serif] text-[clamp(32px,4vw,50px)] font-[800] text-on-surface tracking-tight">
+                Formas de <span class="gradient-text">Inversión</span>
+            </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+
+            <div class="inv-card reveal reveal-delay-1 bg-white p-9 border border-outline/15 rounded-2xl flex flex-col">
+                <div class="w-12 h-12 rounded-xl bg-primary/8 flex items-center justify-center mb-5">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:28px;font-variation-settings:'FILL' 0;">savings</span>
+                </div>
+                <h3 class="font-[Metropolis,sans-serif] text-[22px] font-[700] text-on-surface border-b border-outline/12 pb-4 mb-4">Desde el Pozo</h3>
+                <p class="text-[15px] leading-[1.65] text-on-surface-variant mb-8 flex-grow">Inversión inteligente en las etapas iniciales. Asegura el mejor precio y alta rentabilidad a futuro.</p>
+                <a href="formulario.html" class="text-primary-container font-[700] text-[12px] uppercase tracking-wider hover:text-primary transition-colors flex items-center gap-2 group">
+                    Saber Más
+                    <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+
+            <div class="reveal reveal-delay-2 inv-featured p-10 rounded-2xl flex flex-col">
+                <span class="text-[10px] uppercase tracking-[0.2em] text-white/55 font-[700] mb-4">✦ Más popular</span>
+                <div class="w-12 h-12 rounded-xl bg-white/12 flex items-center justify-center mb-5">
+                    <span class="material-symbols-outlined text-white" style="font-size:28px;font-variation-settings:'FILL' 0;">calendar_month</span>
+                </div>
+                <h3 class="font-[Metropolis,sans-serif] text-[22px] font-[700] text-white border-b border-white/18 pb-4 mb-4">En Cuotas</h3>
+                <p class="text-[15px] leading-[1.65] text-white/82 mb-8 flex-grow">Flexibilidad para tu futuro hogar. Planes de financiación adaptados a tus posibilidades durante la obra.</p>
+                <a href="formulario.html" class="text-white font-[700] text-[12px] uppercase tracking-wider hover:text-white/70 transition-colors flex items-center gap-2 group">
+                    Ver Planes
+                    <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+
+            <div class="inv-card reveal reveal-delay-3 bg-white p-9 border border-outline/15 rounded-2xl flex flex-col">
+                <div class="w-12 h-12 rounded-xl bg-primary/8 flex items-center justify-center mb-5">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:28px;font-variation-settings:'FILL' 0;">calculate</span>
+                </div>
+                <h3 class="font-[Metropolis,sans-serif] text-[22px] font-[700] text-on-surface border-b border-outline/12 pb-4 mb-4">Al Costo</h3>
+                <p class="text-[15px] leading-[1.65] text-on-surface-variant mb-8 flex-grow">Transparencia total en la construcción. Costos claros y gestión optimizada para resultados superiores.</p>
+                <a href="formulario.html" class="text-primary-container font-[700] text-[12px] uppercase tracking-wider hover:text-primary transition-colors flex items-center gap-2 group">
+                    Consultar
+                    <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════════
+     EN CONSTRUCCIÓN
+════════════════════════════════════ -->
+<section class="py-[120px] px-6 projects-bg" id="projects">
+    <div class="max-w-[1200px] mx-auto">
+        <div class="reveal text-center mb-16">
+            <span class="section-label justify-center mb-4 block" style="color:rgba(255,255,255,.55);">Actualmente</span>
+            <h2 class="font-[Metropolis,sans-serif] text-[clamp(32px,4vw,50px)] font-[800] text-white tracking-tight">En Construcción</h2>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-5 text-center">
+
+            <div class="reveal reveal-delay-1 rounded-2xl p-7 flex flex-col items-center justify-center border border-white/15 hover:border-white/35 transition-colors duration-300"
+                 style="background:rgba(255,255,255,.07);backdrop-filter:blur(8px);">
+                <span class="material-symbols-outlined text-white mb-4" style="font-size:52px;opacity:.85;">square_foot</span>
+                <span class="font-[Metropolis,sans-serif] font-[800] text-[clamp(36px,5vw,58px)] leading-none text-white mb-2 stat-counter" data-target="8915">0</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-white/60 font-[700] mt-2">Total de m²</span>
+            </div>
+
+            <div class="reveal reveal-delay-2 rounded-2xl p-7 flex flex-col items-center justify-center border border-white/15 hover:border-white/35 transition-colors duration-300"
+                 style="background:rgba(255,255,255,.07);backdrop-filter:blur(8px);">
+                <span class="material-symbols-outlined text-white mb-4" style="font-size:52px;opacity:.85;">domain</span>
+                <span class="font-[Metropolis,sans-serif] font-[800] text-[clamp(36px,5vw,58px)] leading-none text-white mb-2 stat-counter" data-target="3">0</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-white/60 font-[700] mt-2">Edificios</span>
+            </div>
+
+            <div class="reveal reveal-delay-3 rounded-2xl p-7 flex flex-col items-center justify-center border border-white/15 hover:border-white/35 transition-colors duration-300"
+                 style="background:rgba(255,255,255,.07);backdrop-filter:blur(8px);">
+                <span class="material-symbols-outlined text-white mb-4" style="font-size:52px;opacity:.85;">apartment</span>
+                <span class="font-[Metropolis,sans-serif] font-[800] text-[clamp(36px,5vw,58px)] leading-none text-white mb-2 stat-counter" data-target="96">0</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-white/60 font-[700] mt-2">Departamentos</span>
+            </div>
+
+            <div class="reveal reveal-delay-4 rounded-2xl p-7 flex flex-col items-center justify-center border border-white/15 hover:border-white/35 transition-colors duration-300"
+                 style="background:rgba(255,255,255,.07);backdrop-filter:blur(8px);">
+                <span class="material-symbols-outlined text-white mb-4" style="font-size:52px;opacity:.85;">home_work</span>
+                <span class="font-[Metropolis,sans-serif] font-[800] text-[clamp(36px,5vw,58px)] leading-none text-white mb-2 stat-counter" data-target="4">0</span>
+                <span class="text-[11px] uppercase tracking-[0.12em] text-white/60 font-[700] mt-2">Duplex</span>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════════
+     TEAM
+════════════════════════════════════ -->
+<section class="py-[120px] bg-surface" id="team">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="reveal text-center mb-16">
+            <span class="section-label justify-center mb-4 block">Quiénes somos</span>
+            <h2 class="font-[Metropolis,sans-serif] text-[clamp(32px,4vw,50px)] font-[800] text-on-surface tracking-tight mb-6">
+                Nuestro <span class="gradient-text">Equipo</span>
+            </h2>
+            <p class="text-[16px] leading-[1.7] text-on-surface-variant max-w-3xl mx-auto">
+                Somos un equipo de profesionales con más de 30 años en el mercado. Gestión integral desde el diseño hasta la entrega.<br>
+                <strong class="text-on-surface">Proyecto · Diseño · Desarrollo · Emprendimientos · Gestión · Logística</strong>
+            </p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
+            <div class="team-card reveal reveal-delay-1 bg-white border border-outline/15 rounded-2xl flex flex-col overflow-hidden">
+                <div class="photo-wrap">
+                    <img src="equipo_cristian.png" alt="Cristian Martin Salinas"/>
+                    <div class="photo-overlay"></div>
+                </div>
+                <div class="team-info p-5 flex flex-col gap-1 border-t-4 border-primary-container">
+                    <h4 class="font-[Metropolis,sans-serif] text-[16px] font-[700] text-on-surface leading-tight">Cristian Martin Salinas</h4>
+                    <p class="text-[11px] font-[700] uppercase tracking-[0.1em] text-primary-container">Emprendimiento y gestión</p>
+                </div>
+            </div>
+
+            <div class="team-card reveal reveal-delay-2 bg-white border border-outline/15 rounded-2xl flex flex-col overflow-hidden">
+                <div class="photo-wrap">
+                    <img src="equipo_juan.png" alt="Juan Gustavo Lagatta"/>
+                    <div class="photo-overlay"></div>
+                </div>
+                <div class="team-info p-5 flex flex-col gap-1 border-t-4 border-primary-container">
+                    <h4 class="font-[Metropolis,sans-serif] text-[16px] font-[700] text-on-surface leading-tight">Juan Gustavo Lagatta</h4>
+                    <p class="text-[11px] font-[700] uppercase tracking-[0.1em] text-primary-container">Desarrollo y construcción</p>
+                </div>
+            </div>
+
+            <div class="team-card reveal reveal-delay-3 bg-white border border-outline/15 rounded-2xl flex flex-col overflow-hidden">
+                <div class="photo-wrap">
+                    <img src="equipo_silvina.png" alt="Silvina Lorenzon"/>
+                    <div class="photo-overlay"></div>
+                </div>
+                <div class="team-info p-5 flex flex-col gap-1 border-t-4 border-primary-container">
+                    <h4 class="font-[Metropolis,sans-serif] text-[16px] font-[700] text-on-surface leading-tight">Silvina Lorenzon</h4>
+                    <p class="text-[11px] font-[700] uppercase tracking-[0.1em] text-primary-container">Administración y logística</p>
+                </div>
+            </div>
+
+            <div class="team-card reveal reveal-delay-4 bg-white border border-outline/15 rounded-2xl flex flex-col overflow-hidden">
+                <div class="photo-wrap">
+                    <img src="equipo_federico.png" alt="Federico Smokvina"/>
+                    <div class="photo-overlay"></div>
+                </div>
+                <div class="team-info p-5 flex flex-col gap-1 border-t-4 border-primary-container">
+                    <h4 class="font-[Metropolis,sans-serif] text-[16px] font-[700] text-on-surface leading-tight">Federico Smokvina</h4>
+                    <p class="text-[11px] font-[700] uppercase tracking-[0.1em] text-primary-container">Proyecto y diseño</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════════
+     CONTACT
+════════════════════════════════════ -->
+<section class="py-[96px] px-6 bg-surface-container-low border-t border-outline/10" id="contact">
+    <div class="max-w-[1200px] mx-auto">
+        <div class="reveal text-center mb-14">
+            <span class="section-label justify-center mb-4 block">Hablemos</span>
+            <h2 class="font-[Metropolis,sans-serif] text-[clamp(28px,4vw,46px)] font-[800] text-on-surface tracking-tight">
+                <span class="gradient-text">Contacto</span>
+            </h2>
+        </div>
+        <div class="reveal grid grid-cols-1 md:grid-cols-2 gap-12 items-start max-w-[900px] mx-auto">
+
+            <div>
+                <div class="contact-info-item">
+                    <span class="material-symbols-outlined text-primary-container mt-0.5" style="font-size:26px;">phone</span>
+                    <div>
+                        <p class="text-[11px] uppercase tracking-[0.14em] text-on-surface-variant font-[700] mb-1">Teléfono</p>
+                        <a href="tel:+541138651991" class="text-[17px] font-[600] text-on-surface hover:text-primary transition-colors">+54 11 3865-1991</a>
+                    </div>
+                </div>
+                <div class="contact-info-item">
+                    <span class="material-symbols-outlined text-primary-container mt-0.5" style="font-size:26px;">mail</span>
+                    <div>
+                        <p class="text-[11px] uppercase tracking-[0.14em] text-on-surface-variant font-[700] mb-1">Email</p>
+                        <a href="mailto:info@crissa.com.ar" class="text-[17px] font-[600] text-on-surface hover:text-primary transition-colors">info@crissa.com.ar</a>
+                    </div>
+                </div>
+                <div class="contact-info-item">
+                    <span class="material-symbols-outlined text-primary-container mt-0.5" style="font-size:26px;">schedule</span>
+                    <div>
+                        <p class="text-[11px] uppercase tracking-[0.14em] text-on-surface-variant font-[700] mb-1">Horario de atención</p>
+                        <p class="text-[16px] text-on-surface">Lun. a Vier. de 9:00 a 17:00 hs</p>
+                    </div>
+                </div>
+                <div class="contact-info-item">
+                    <span class="material-symbols-outlined text-primary-container mt-0.5" style="font-size:26px;">share</span>
+                    <div>
+                        <p class="text-[11px] uppercase tracking-[0.14em] text-on-surface-variant font-[700] mb-2">Redes sociales</p>
+                        <div class="flex gap-4">
+                            <a href="https://www.instagram.com/crissa.arq/" target="_blank" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-[14px] font-[500]">
+                                <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                Instagram
+                            </a>
+                            <a href="https://www.facebook.com/crissa.arq/" target="_blank" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-[14px] font-[500]">
+                                <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                Facebook
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <a href="https://wa.me/541138651991?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20Crissa." target="_blank"
+                   class="flex items-center gap-4 bg-[#25D366] text-white px-7 py-5 rounded-2xl hover:bg-[#1ebe5d] transition-colors duration-300 group">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    <div>
+                        <p class="font-[700] text-[16px]">Escribinos por WhatsApp</p>
+                        <p class="text-white/80 text-[13px]">Respondemos en horario de atención</p>
+                    </div>
+                    <span class="material-symbols-outlined ml-auto group-hover:translate-x-1 transition-transform" style="font-size:22px;">arrow_forward</span>
+                </a>
+                <a href="mailto:info@crissa.com.ar"
+                   class="flex items-center gap-4 bg-white border border-outline/20 text-on-surface px-7 py-5 rounded-2xl hover:border-primary-container hover:bg-primary-container/4 transition-all duration-300 group">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:30px;">mail</span>
+                    <div>
+                        <p class="font-[700] text-[16px]">Envianos un email</p>
+                        <p class="text-on-surface-variant text-[13px]">info@crissa.com.ar</p>
+                    </div>
+                    <span class="material-symbols-outlined ml-auto text-on-surface-variant group-hover:translate-x-1 transition-transform" style="font-size:22px;">arrow_forward</span>
+                </a>
+                <a href="tel:+541138651991"
+                   class="flex items-center gap-4 bg-white border border-outline/20 text-on-surface px-7 py-5 rounded-2xl hover:border-primary-container hover:bg-primary-container/4 transition-all duration-300 group">
+                    <span class="material-symbols-outlined text-primary-container" style="font-size:30px;">phone</span>
+                    <div>
+                        <p class="font-[700] text-[16px]">Llamanos</p>
+                        <p class="text-on-surface-variant text-[13px]">+54 11 3865-1991</p>
+                    </div>
+                    <span class="material-symbols-outlined ml-auto text-on-surface-variant group-hover:translate-x-1 transition-transform" style="font-size:22px;">arrow_forward</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════════
+     FOOTER
+════════════════════════════════════ -->
+<footer class="bg-white py-10 px-6 border-t border-outline/10">
+    <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center gap-5">
+            <img alt="Crissa Logo" class="h-9 w-auto object-contain" src="Crissalogo.jpg"/>
+            <div class="flex items-center gap-2 text-on-surface-variant">
+                <a href="https://www.instagram.com/crissa.arq/" target="_blank" class="hover:text-primary transition-colors p-1.5 rounded-lg hover:bg-outline/8">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/crissa.arq/" target="_blank" class="hover:text-primary transition-colors p-1.5 rounded-lg hover:bg-outline/8">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://wa.me/541138651991" target="_blank" class="hover:text-[#25D366] transition-colors p-1.5 rounded-lg hover:bg-outline/8">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </a>
+            </div>
+        </div>
+        <p class="text-[13px] text-on-surface-variant text-center">© 2024 Crissa Construcción &amp; Real Estate. Precisión en cada detalle.</p>
+        <div class="flex flex-wrap justify-center gap-4 text-[13px]">
+            <a class="text-on-surface-variant hover:text-primary underline transition-colors" href="#">Política de Privacidad</a>
+            <a class="text-on-surface-variant hover:text-primary underline transition-colors" href="#">Términos de Servicio</a>
+        </div>
+    </div>
+</footer>
+
+<!-- WhatsApp float -->
+<a href="https://wa.me/541138651991?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20Crissa." target="_blank"
+   class="wa-float fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform duration-300">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- ════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════ -->
+<script>
+// ── Scroll reveal ──
+const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+    });
+}, { threshold: 0.10 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ── Stat counters ──
+const cntObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseFloat(el.dataset.target.replace(/,/g,''));
+        const dur = 2200;
+        const start = performance.now();
+        const tick = now => {
+            const p = Math.min((now - start) / dur, 1);
+            const ease = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.floor(ease * target).toLocaleString('es-AR');
+            if (p < 1) requestAnimationFrame(tick);
+            else el.textContent = target.toLocaleString('es-AR');
+        };
+        requestAnimationFrame(tick);
+        cntObs.unobserve(el);
+    });
+}, { threshold: 0.4 });
+document.querySelectorAll('.stat-counter').forEach(el => cntObs.observe(el));
+
+// ── Nav shadow ──
+window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('nav-scrolled', window.scrollY > 20);
+}, { passive: true });
+
+// ── Mobile menu ──
+document.getElementById('menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('open');
+});
+
+// ── Parallax hero + scroll-driven text fade (JS fallback) ──
+window.addEventListener('scroll', () => {
+    const h = document.querySelector('.hero-bg');
+    if (h) h.style.transform = `translateY(${window.scrollY * 0.28}px)`;
+
+    // Fade hero text if browser doesn't support CSS scroll-driven animations
+    if (!CSS.supports('animation-timeline', 'scroll()')) {
+        const heroContent = document.getElementById('heroContent');
+        if (heroContent) {
+            const progress = Math.min(window.scrollY / 480, 1);
+            heroContent.style.opacity  = String(1 - progress);
+            heroContent.style.transform = `translateY(${progress * 80}px)`;
+        }
+    }
+}, { passive: true });
+
+// ══════════════════════════════════════
+//  SCROLL-DRIVEN SPIN SECTION
+// ══════════════════════════════════════
+(function () {
+    const section   = document.querySelector('.spin-section');
+    const card      = document.getElementById('spinCard');
+    const progressB = document.getElementById('spinProgressBar');
+    const hint      = document.getElementById('spinHint');
+    const textSide  = document.getElementById('spinTextSide');
+    if (!section || !card) return;
+
+    // Trigger text reveal once
+    const textObs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) textSide.classList.add('visible'); });
+    }, { threshold: 0.2 });
+    textObs.observe(section);
+
+    let raf = null;
+    let currentAngle = 0;
+    let targetAngle  = 0;
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function updateSpin() {
+        const rect       = section.getBoundingClientRect();
+        const sectionTop = window.scrollY + rect.top;
+        const scrollable = section.offsetHeight - window.innerHeight;
+        const scrolled   = window.scrollY - sectionTop;
+        const progress   = Math.max(0, Math.min(1, scrolled / scrollable));
+
+        // Full 360° spin as you scroll through the section
+        targetAngle = progress * 360;
+
+        // Smooth interpolation
+        currentAngle = lerp(currentAngle, targetAngle, 0.12);
+
+        card.style.transform = `rotateY(${currentAngle}deg)`;
+
+        // Progress bar
+        progressB.style.transform = `scaleX(${progress})`;
+
+        // Hide scroll hint once user starts scrolling in section
+        if (progress > 0.04) {
+            hint.style.opacity = '0';
+        } else {
+            hint.style.opacity = '0.5';
+        }
+
+        // Glow intensity peaks at front-facing (0° / 180° / 360°)
+        const frontness = Math.abs(Math.cos((currentAngle * Math.PI) / 180));
+        const glow = document.getElementById('spinGlow');
+        if (glow) glow.style.opacity = String(0.3 + frontness * 0.7);
+
+        raf = requestAnimationFrame(updateSpin);
+    }
+
+    // Only run RAF when section is in view
+    const spinObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                if (!raf) raf = requestAnimationFrame(updateSpin);
+            } else {
+                if (raf) { cancelAnimationFrame(raf); raf = null; }
+            }
+        });
+    }, { threshold: 0 });
+    spinObs.observe(section);
+})();
+</script>
+</body>
+</html>
